@@ -2,20 +2,10 @@ pipeline {
     agent any
 
     tools {
-        nodejs "NodeJS" // Name of NodeJS installation in Jenkins
-    }
-
-    environment {
-        CI = 'true'
+        nodejs "NodeJS"
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                git branch: 'main', url: 'https://github.com/username/playwright-project.git'
-            }
-        }
-
         stage('Install Dependencies') {
             steps {
                 sh 'npm install'
@@ -47,13 +37,7 @@ pipeline {
 
     post {
         always {
-            archiveArtifacts artifacts: '**/playwright-report/**', fingerprint: true
-        }
-        success {
-            echo 'Tests Passed!'
-        }
-        failure {
-            echo 'Tests Failed!'
+            archiveArtifacts artifacts: '**/playwright-report/**'
         }
     }
 }
